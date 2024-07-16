@@ -15,7 +15,7 @@ spec:
         app: result
     spec:
       containers:
-      - image: dockersamples/examplevotingapp_result
+      - image: public.ecr.aws/l1b1a8r4/voting-app-result
         name: result
         ports:
         - containerPort: 80

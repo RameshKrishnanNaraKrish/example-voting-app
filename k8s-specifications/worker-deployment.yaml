@@ -15,5 +15,5 @@ spec:
         app: worker
     spec:
       containers:
-      - image: dockersamples/examplevotingapp_worker
+      - image: public.ecr.aws/l1b1a8r4/voting-app-worker
         name: worker
