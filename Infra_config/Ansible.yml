@@ -1,0 +1,65 @@
+---
+- name: Install Jenkins / Docker / eksctl / kubectl / awscli
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update Cache
+      apt:
+        update_cache: yes
+    - name: Install JDK
+      apt:
+        name: openjdk-17-jdk
+        state: present 
+    - name: Copy Shell script
+      copy:
+        src: jenkins-install.sh
+        dest: /home/ubuntu/jenkins-install.sh
+        mode: 0755
+    - name: Execute Shell Script on Node
+      shell: sh /home/ubuntu/jenkins-install.sh
+    - name: Remove Shell Script
+      file:
+        path: /home/ubuntu/jenkins-install.sh
+        state: absent
+    - name: Start Jenkins
+      systemd: 
+        name: jenkins
+        enabled: yes
+        state: started
+    - name: Jenkins User install Docker
+      copy:
+        src: docker-install.sh
+        dest: /var/lib/jenkins
+        mode: 0755
+    - name: Execute Shell script on Node
+      shell: sh /var/lib/jenkins/docker-install.sh
+    - name: Remove Shell Script
+      file:
+        path: /var/lib/jenkins/docker-install.sh
+        state: absent
+    - name: Jenkins User install eksctl
+      copy:
+        src: eksctl-install.sh
+        dest: /var/lib/jenkins
+        mode: 0755
+    - name: Execute Shell script on Node
+      shell: sh /var/lib/jenkins/eksctl-install.sh
+    - name: Remove Shell Script
+      file:
+        path: /var/lib/jenkins/eksctl-install.sh
+        state: absent
+    - name: Jenkins User install kubectl
+      copy:
+        src: kubectl-install.sh
+        dest: /var/lib/jenkins
+        mode: 0755
+    - name: Execute Shell script on Node
+      shell: sh /var/lib/jenkins/kubectl-install.sh
+    - name: Remove Shell Script
+      file:
+        path: /var/lib/jenkins/kubectl-install.sh
+        state: absent
+    - name: Jenkins User install awscli
+      apt:
+        name: awscli
+        state: present
